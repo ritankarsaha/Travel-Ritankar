@@ -72,3 +72,71 @@ Two Way Backend:- Creating a two way backend (preferably in Rust) and run the ba
 
 
 This architecture syncs the frontend servers, backend servers and the databases with the help of the load balancer running in sync to them and  balances scalability with user-centric features.
+
+
+### Steps to Reproduce:-
+
+To Reproduce the effects you need to start and connect all the servers at first.
+
+# Backend
+First you need to setup the .env files and the env variables.
+
+```bash
+SECRET_KEY="ritankar"
+DEBUG=True
+MONGO_DATABASE="your mongodb url"
+PORT=8000
+```
+
+
+```bash
+cd backend
+go run cmd/main.go
+```
+
+This starts the backend server. Golang needs to be installed on your PC for successfully running the backend.
+
+
+# LoadBalancer
+
+```bash
+cd loadbalancer
+go run main.go
+```
+
+This starts the loadbalancer. You need to mention the URLS in the loadbalancer of the respective backend and frontend servers.
+
+# Frontend
+
+
+First you need to setup the .env variables for the frontend
+
+```bash
+
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="somesecret"
+DATABASE_URL="your postgres database url"
+GITHUB_CLIENT_ID="your github client id"
+GITHUB_CLIENT_SECRET="your github client secret"
+
+GOOGLE_CLIENT_ID="your google client id"
+GOOGLE_CLIENT_SECRET="your google client secret"
+```
+
+Then follow these steps:- 
+
+```bash
+cd frontend
+npm install
+make
+npx prisma db push
+```
+
+
+
+
+The entire code is completely dockerized. Postgres 16 image should be present for the second way backend. If you don't have Postgres16 docker will start downloading the image. The necessary makefile has also been created.
+
+
+The site will be finally up and running. If you face any issues feel free to communicate / open up a discussion.
